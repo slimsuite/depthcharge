@@ -262,7 +262,7 @@ class DepthCharge(rje_forker.Forker):
         Regions overlapping gaps are labelled "gap". Otherwise, regions are labelled "bad". All regions are output to
         `*.depthcharge.tdt` along with the length of each sequence (region type "all").
 
-        Future versions will either fragment the assembly at "bad" regions (and "gap" regions if 'breakgaps=T`. If
+        Future versions will either fragment the assembly at "bad" regions (and "gap" regions if `breakgaps=T`. If
         `breakmode=gap` then DepthCharge will replace bad regions with a gap (`NNNN...`) of length `gapsize=INT`. If
         `breakmode=report` then no additional processing of the assembly will be performed. Otherwise, the processed
         assembly will be saved as `*.depthcharge.fasta`.
