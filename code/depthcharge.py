@@ -267,6 +267,19 @@ class DepthCharge(rje_forker.Forker):
         `breakmode=report` then no additional processing of the assembly will be performed. Otherwise, the processed
         assembly will be saved as `*.depthcharge.fasta`.
 
+        ---
+
+        # Running DepthCharge
+
+        DepthCharge is written in Python 2.x and can be run directly from the commandline:
+
+            python $CODEPATH/depthcharge.py [OPTIONS]
+
+        If running as part of [SLiMSuite](http://slimsuite.blogspot.com/), `$CODEPATH` will be the SLiMSuite `tools/`
+        directory. If running from the standalone [DepthCharge git repo](https://github.com/slimsuite/depthcharge), `$CODEPATH`
+        will be the path the to `code/` directory. Please see details in the [DepthCharge git repo](https://github.com/slimsuite/depthcharge)
+        for running on example data.
+
         ## Dependencies
 
         DepthCharge uses `grep` and `awk`. To generate documentation with `dochtml`, R will need to be installed and a

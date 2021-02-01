@@ -1741,15 +1741,22 @@ div.tocify {
 <p>DepthCharge uses a genome assembly and PAF file of mapped reads as input. If no file is provided, minimap2 will be used to generate one.</p>
 <p>For each sequence, DepthCharge starts at the beginning of the sequence and scans through the PAF file for coverage to drop below the <code>mindepth=INT</code> threshold (default = 1 read). These positions are marked as “bad” and compressed into regions of adjacent bad positions. Regions at the start or end of a sequnece are labelled “end”. Regions overlapping gaps are labelled “gap”. Otherwise, regions are labelled “bad”. All regions are output to <code>*.depthcharge.tdt</code> along with the length of each sequence (region type “all”).</p>
 <p>Future versions will either fragment the assembly at “bad” regions (and “gap” regions if <code>breakgaps=T</code>. If <code>breakmode=gap</code> then DepthCharge will replace bad regions with a gap (<code>NNNN...</code>) of length <code>gapsize=INT</code>. If <code>breakmode=report</code> then no additional processing of the assembly will be performed. Otherwise, the processed assembly will be saved as <code>*.depthcharge.fasta</code>.</p>
+<hr />
+</div>
+<div id="running-depthcharge" class="section level1">
+<h1><span class="header-section-number">2</span> Running DepthCharge</h1>
+<p>DepthCharge is written in Python 2.x and can be run directly from the commandline:</p>
+<pre><code>python $CODEPATH/depthcharge.py [OPTIONS]</code></pre>
+<p>If running as part of <a href="http://slimsuite.blogspot.com/">SLiMSuite</a>, <code>$CODEPATH</code> will be the SLiMSuite <code>tools/</code> directory. If running from the standalone <a href="https://github.com/slimsuite/depthcharge">DepthCharge git repo</a>, <code>$CODEPATH</code> will be the path the to <code>code/</code> directory. Please see details in the <a href="https://github.com/slimsuite/depthcharge">DepthCharge git repo</a> for running on example data.</p>
 <div id="dependencies" class="section level2">
-<h2><span class="header-section-number">1.1</span> Dependencies</h2>
+<h2><span class="header-section-number">2.1</span> Dependencies</h2>
 <p>DepthCharge uses <code>grep</code> and <code>awk</code>. To generate documentation with <code>dochtml</code>, R will need to be installed and a pandoc environment variable must be set, e.g.</p>
 <pre><code>export RSTUDIO_PANDOC=/Applications/RStudio.app/Contents/MacOS/pandoc</code></pre>
 <p>If a PAF file is not provided, <a href="https://github.com/lh3/minimap2">minimap2</a> must be installed and either added to the environment <code>$PATH</code> or given with the <code>minimap2=PROG</code> setting.</p>
 <p>For full documentation of the DepthCharge workflow, run with <code>dochtml=T</code> and read the <code>*.docs.html</code> file generated.</p>
 </div>
 <div id="commandline-options" class="section level2">
-<h2><span class="header-section-number">1.2</span> Commandline options</h2>
+<h2><span class="header-section-number">2.2</span> Commandline options</h2>
 <pre><code>### ~ Main DepthCharge run options ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
 seqin=FILE      : Input sequence assembly [None]
 basefile=FILE   : Root of output file names [$SEQIN basefile]
