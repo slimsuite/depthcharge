@@ -1,0 +1,84 @@
+---
+title: "DepthCharge V0.2.0 Documentation"
+author: "Richard J. Edwards"
+date: "2021-02-01"
+output:
+  html_document:
+    css: http://www.slimsuite.unsw.edu.au/stylesheets/slimhtml.css
+    toc: true
+    toc_float: true
+    toc_collapsed: false
+    toc_depth: 3
+    number_sections: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<a name="Top" />
+
+
+# DepthCharge: genome assembly quality control and misassembly repair.
+
+DepthCharge is an assembly quality control and misassembly repair program. It uses mapped long read depth of
+coverage to charge through a genome assembly and identify coverage "cliffs" that may indicate a misassembly.
+If appropriate, it will then blast the assembly into fragment at those misassemblies.
+
+DepthCharge uses a genome assembly and PAF file of mapped reads as input. If no file is provided, minimap2 will
+be used to generate one.
+
+For each sequence, DepthCharge starts at the beginning of the sequence and scans through the PAF file for
+coverage to drop below the `mindepth=INT` threshold (default = 1 read). These positions are marked as "bad" and
+compressed into regions of adjacent bad positions. Regions at the start or end of a sequnece are labelled "end".
+Regions overlapping gaps are labelled "gap". Otherwise, regions are labelled "bad". All regions are output to
+`*.depthcharge.tdt` along with the length of each sequence (region type "all").
+
+Future versions will either fragment the assembly at "bad" regions (and "gap" regions if 'breakgaps=T`. If
+`breakmode=gap` then DepthCharge will replace bad regions with a gap (`NNNN...`) of length `gapsize=INT`. If
+`breakmode=report` then no additional processing of the assembly will be performed. Otherwise, the processed
+assembly will be saved as `*.depthcharge.fasta`.
+
+## Dependencies
+
+DepthCharge uses `grep` and `awk`. To generate documentation with `dochtml`, R will need to be installed and a
+pandoc environment variable must be set, e.g.
+
+    export RSTUDIO_PANDOC=/Applications/RStudio.app/Contents/MacOS/pandoc
+
+If a PAF file is not provided, [minimap2](https://github.com/lh3/minimap2) must be installed and either added to
+the environment `$PATH` or given with the `minimap2=PROG` setting.
+
+For full documentation of the DepthCharge workflow, run with `dochtml=T` and read the `*.docs.html` file generated.
+
+
+## Commandline options
+
+
+```
+### ~ Main DepthCharge run options ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+seqin=FILE      : Input sequence assembly [None]
+basefile=FILE   : Root of output file names [$SEQIN basefile]
+paf=FILE        : PAF file of long reads mapped onto assembly [$BASEFILE.paf]
+breakmode=X     : How to treat misassemblies (report/gap/fragment) [fragment]
+breakgaps=T/F   : Whether to break at gaps where coverage drops if breakmode=fragment [False]
+gapsize=INT     : Size of gaps to insert when breakmode=gap [100]
+mindepth=INT    : Minimum depth to class as OK [1]
+### ~ PAF file generation options ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+reads=FILELIST  : List of fasta/fastq files containing reads. Wildcard allowed. Can be gzipped. []
+readtype=LIST   : List of ont/pb/hifi file types matching reads for minimap2 mapping [ont]
+minimap2=PROG   : Full path to run minimap2 [minimap2]
+mapopt=CDICT    : Dictionary of minimap2 options [N:100,p:0.0001,x:asm5]
+### ~ Additional options ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+dochtml=T/F     : Generate HTML Diploidocus documentation (*.docs.html) instead of main run [False]
+logfork=T/F     : Whether to log forking in main log [False]
+tmpdir=PATH     : Path for temporary output files during forking (not all modes) [./tmpdir/]
+### ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ###
+```
+
+
+
+<br>
+<small>&copy; 2021 Richard Edwards | richard.edwards@unsw.edu.au</small>
